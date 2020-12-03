@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+def mainClass = 'com.coders.cc.App'
+
+sourceCompatibility = 8
+targetCompatibility = 8
+
+dependencies {
+    implementation 'com.google.guava:guava:28.0-jre'
+//    implementation 'commons-io:commons-io:2.6'
+    testImplementation 'junit:junit:4.12'
+}
+
+application {
+    mainClassName = mainClass
+}
+
+jar {
+    from {
+        sourceSets.main.runtimeClasspath
+                .filter { (it.isDirectory() && it.listFiles().length > 0) || it.isFile() }
+                .collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes("Main-Class": mainClass)
+    }
+    archiveBaseName = "CodeCopier"
+    version = ''
+}
